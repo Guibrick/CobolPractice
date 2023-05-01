@@ -1,6 +1,6 @@
        IDENTIFICATION DIVISION.
        PROGRAM-ID. "SalesManager".
-       AUTHOR. Guido
+       AUTHOR. Guido.
 
        ENVIRONMENT DIVISION.
        CONFIGURATION SECTION.

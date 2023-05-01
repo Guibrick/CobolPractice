@@ -33,6 +33,17 @@
        01  PRINT-LINE              PIC X(132).
 
        WORKING-STORAGE SECTION.
+       01  WS-CURRENT-DATE-DATA.
+           05 WS-CURRENT-DATE.
+              10 WS-CURRENT-YEAR   PIC 9(04).
+              10 WS-CURRENT-MONTH  PIC 9(02).
+              10 WS-CURRENT-DAY    PIC 9(02).
+           05 WS-CURRENT-TIME.
+              10 WS-CURRENT-HOUR   PIC 9(02).
+              10 WS-CURRENT-MINUTE PIC 9(02).
+              10 WS-CURRENT-SEC    PIC 9(02).
+              10 WS-CURRENT-MILSEC PIC 9(02).     
+
        01  WS-TOTAL-SALES         PIC 9(10) COMP-3.
       
        01  WS-REGION-SALES.
@@ -48,25 +59,39 @@
             05 FILLER              PIC X(6)  VALUE 'REGION'.
             05 FILLER              PIC X(10) VALUE SPACES.
             05 FILLER              PIC X(12) VALUE 'YEARLY SALES'.
-            05 FILLER              PIC X(73) VALUE SPACES.
+            05 FILLER              PIC X(8) VALUE SPACES.
+            05 HEAD-DATE.
+               10 HEAD-DAY         PIC X(2).
+               10 FILLER           PIC X VALUE '/'.
+               10 HEAD-MONTH       PIC X(2).
+               10 FILLER           PIC X VALUE '/'.               
+               10 HEAD-YEAR        PIC X(4).
 
+       01  HEADING-LINE-2.
+            05 FILLER              PIC X(5) VALUE SPACES.
+            05 FILLER              PIC X(16) VALUE '----------------'.
+            05 FILLER              PIC X(29) VALUE SPACES.
+            05 FILLER              PIC X(6)  VALUE '------'.
+            05 FILLER              PIC X(12) VALUE SPACES.
+            05 FILLER              PIC X(12) VALUE '------------'.
+            05 FILLER              PIC X(53) VALUE SPACES.
+               
        01 DETAIL-LINE.
             05 FILLER               PIC X(5)  VALUE SPACES.
             05 DET-SALESPERSON-NAME PIC X(40).
             05 FILLER               PIC X(5)  VALUE SPACES.
             05 DET-REGION           PIC X(5).
             05 FILLER               PIC X(10)  VALUE SPACES.
-            05 DET-YEARLYSALES      PIC X(12).
+            05 DET-YEARLYSALES      PIC $$$,$$$,$$$,$$9.
             05 FILLER               PIC X(40)  VALUE SPACES.
 
        01  TOTAL-LINE.
-            05 FILLER               PIC X(5)   VALUE SPACES.
-            05 FILLER               PIC X(16)  VALUE SPACES.
-            05 FILLER               PIC X(10)  VALUE SPACES.
-            05 FILLER               PIC X(6)   VALUE SPACES.
-            05 FILLER               PIC X(10)  VALUE SPACES.
-            05 TOTAL-YRLY-SALES     PIC X(12).
-            05 FILLER               PIC X(73)  VALUE SPACES.
+           05 FILLER               PIC X(5)   VALUE SPACES.
+           05 FILLER               PIC X(16)  VALUE SPACES.
+           05 FILLER               PIC X(30)  VALUE SPACES.
+           05 FILLER               PIC X(14)   VALUE 'Grand Total: '.
+           05 TOTAL-YRLY-SALES     PIC $**,***,***,**9.
+           05 FILLER               PIC X(53)  VALUE SPACES.
 
        PROCEDURE DIVISION.
 
@@ -95,6 +120,10 @@
            PERFORM 0130-WRITE-TOTAL-LINE.
 
        0110-WRITE-HEADING-LINE.
+           MOVE FUNCTION CURRENT-DATE TO WS-CURRENT-DATE-DATA.
+           MOVE WS-CURRENT-DAY TO HEAD-DAY.
+           MOVE WS-CURRENT-MONTH TO HEAD-MONTH.
+           MOVE WS-CURRENT-YEAR TO HEAD-YEAR.
            MOVE HEADING-LINE TO PRINT-LINE.
            WRITE PRINT-LINE AFTER ADVANCING 1 LINE.
            MOVE SPACES TO PRINT-LINE.
